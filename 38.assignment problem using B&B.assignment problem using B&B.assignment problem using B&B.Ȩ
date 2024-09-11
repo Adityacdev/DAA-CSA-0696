@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <limits.h>
+#define N 4 
+int minCost;
+bool assigned[N]; 
+void assignTask(int costMatrix[N][N], int agent, int costSoFar) {
+    if (agent == N) {
+        if (costSoFar < minCost) {
+            minCost = costSoFar;
+        }
+        return;
+    }
+    int task;
+    for (task = 0; task < N; task++) {
+        if (!assigned[task]) {
+            assigned[task] = true;
+            assignTask(costMatrix, agent + 1, costSoFar + costMatrix[agent][task]);
+            assigned[task] = false;
+        }
+    }
+}
+int main() {
+    int costMatrix[N][N] = {
+        {9, 2, 7, 8},
+        {6, 4, 3, 7},
+        {5, 8, 1, 8},
+        {7, 6, 9, 4}
+    };
+    minCost = INT_MAX;
+    assignTask(costMatrix, 0, 0);
+    printf("Minimum cost of assignment: %d\n", minCost);
+    return 0;
+}

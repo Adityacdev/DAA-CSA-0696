@@ -1,0 +1,53 @@
+#include <stdio.h>
+#define MAX_ITEMS 100
+#define MAX_CONTAINERS 100
+
+void containerloader(int items[], int n, int binCapacity) {
+    int bins[MAX_CONTAINERS] = {0};
+    int binCount = 0;
+    for (int i = 0; i < n; i++) {
+        int j;
+        for (j = i + 1; j < n; j++) {
+            if (items[j] > items[i]) {
+                int temp = items[i];
+                items[i] = items[j];
+                items[j] = temp;
+            }
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        int j;
+        for (j = 0; j < binCount; j++) {
+            if (bins[j] >= items[i]) {
+                bins[j] -= items[i];
+                break;
+            }
+        }
+        if (j == binCount) {
+            bins[binCount] = binCapacity - items[i];
+            binCount++;
+        }
+    }
+
+    printf("Minimum number of containers required: %d\n", binCount);
+}
+
+int main() {
+    int items[MAX_ITEMS];
+    int n, binCapacity;
+
+    printf("Enter the number of items: ");
+    scanf("%d", &n);
+
+    printf("Enter the sizes of items: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &items[i]);
+    }
+
+    printf("Enter the capacity of each container: ");
+    scanf("%d", &binCapacity);
+
+    containerloader(items, n, binCapacity);
+
+    return 0;
+}
